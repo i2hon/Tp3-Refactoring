@@ -1,6 +1,7 @@
 package oop2.tp3.ejercicio1;
 
 public class Main {
+    /*
     public static void main(String args[]) {
         Libro elTunel = new Libro("El Túnel", Libro.REGULARES);
         Libro antesDelFin = new Libro("Antes del Fin", Libro.REGULARES);
@@ -15,4 +16,6 @@ public class Main {
         System.out.println(resultado[0]);
         System.out.println(resultado[1]);
     }
+
+     */
 }
