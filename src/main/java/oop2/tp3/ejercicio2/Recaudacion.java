@@ -10,19 +10,43 @@ import java.util.List;
 import java.util.Map;
 
 public class Recaudacion {
-    public static List<Map<String, String>> where(Map<String, String> options)
-            throws IOException {
+    public static List<Map<String, String>> where(Map<String, String> options) throws IOException {
         List<String[]> csvData = new ArrayList<String[]>();
         CSVReader reader = new CSVReader(new FileReader("src/main/resources/data.csv"));
+        /*
+        van leyendo 1 por 1 el contenido del archivo y guardandolo en csvData
         String[] row = null;
-
         while ((row = reader.readNext()) != null) {
             csvData.add(row);
         }
+        */
+        //2 opcion guardar el contentenido del archivo directamente
+        csvData = reader.readAll();
 
         reader.close();
+        //remueve el header
         csvData.remove(0);
 
+        return csvData.stream().filter(
+                filtro -> !options.containsKey("company_name") || filtro[1].equals(options.get("company_name")))
+                .filter(filtro -> !options.containsKey("city") || filtro[4].equals(options.get("city")))
+                .filter(filtro -> !options.containsKey("state") || filtro[5].equals(options.get("state")))
+                .filter(filtro -> !options.containsKey("round") || filtro[9].equals(options.get("round")))
+                .map(filtro -> {
+                    Map<String, String> mapped = new HashMap<>();
+                    mapped.put("permalink", filtro[0]);
+                    mapped.put("company_name", filtro[1]);
+                    mapped.put("number_employees", filtro[2]);
+                    mapped.put("category", filtro[3]);
+                    mapped.put("city", filtro[4]);
+                    mapped.put("state", filtro[5]);
+                    mapped.put("funded_date", filtro[6]);
+                    mapped.put("raised_amount", filtro[7]);
+                    mapped.put("raised_currency", filtro[8]);
+                    mapped.put("round", filtro[9]);
+                    return mapped;
+                }).toList();
+/*
         if (options.containsKey("company_name")) {
             List<String[]> results = new ArrayList<String[]>();
 
@@ -84,5 +108,7 @@ public class Recaudacion {
             output.add(mapped);
         }
         return output;
+
+ */
     }
 }

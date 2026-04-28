@@ -3,7 +3,82 @@ package oop2.tp3.ejercicio5;
 import java.util.List;
 
 public class Calculador {
+    public String reporte(Factura factura, List<Evento> eventos) {
+        float totalAmount = 0;
+        float creditos = 0;
+        var result = "Facturación para " + factura.nombreCliente() + "\n";
+        var actuaciones = factura.actuaciones();
+        for (var actuacion : actuaciones) {
+            float monto = 0;
+            var evento = eventos.stream()
+                    .filter(e -> e.nombreEvento().equals(actuacion.nombreEvento()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
+            //monto ganado en funcion
+            monto = evento.costoEvento(actuacion.numberoEspectadores());
+
+            // creditos a ganar
+            creditos += evento.creditosGanados(actuacion.numberoEspectadores());
+
+            result += actuacion.nombreEvento() + ": " + monto + ". Asientos: " + actuacion.numberoEspectadores() + "\n";//` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
+            totalAmount += monto;
+        }
+        result += "Monto ganado: " + totalAmount + "\n";
+        result += "Créditos ganados: " + creditos + "\n";
+
+        return result;
+    }
+    /* vercion original 2.0 (ahora funciona el test
+    public String reporte(Factura factura, List<Evento> eventos) {
+        float totalAmount = 0;
+        float creditos = 0;
+        var result = "Facturación para " + factura.nombreCliente() + "\n";
+        var actuaciones = factura.actuaciones();
+        for (var actuacion : actuaciones) {
+            float monto = 0;
+            var tipo = eventos.stream()
+                    .filter(e -> e.nombreEvento().equals(actuacion.nombreEvento()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Evento no encontrado"))
+                    .tipo();
+
+            switch (tipo) {
+                case "Drama":
+                    monto = 40000;
+                    if (actuacion.numberoEspectadores() > 30) {
+                        monto += 1000 * (actuacion.numberoEspectadores() - 30);
+                    }
+                    break;
+                case "Comedia":
+                    monto = 30000;
+                    if (actuacion.numberoEspectadores() > 20) {
+                        monto += 10000 + 500 * (actuacion.numberoEspectadores() - 20);
+                    }
+                    monto += 300 * actuacion.numberoEspectadores();
+                    break;
+                default:
+                    throw new RuntimeException("Tipo de evento no conocido");
+            }
+            // creditos a ganar
+            creditos += Math.max(actuacion.numberoEspectadores() - 30, 0);
+            // creditos extras para comedia
+            if ("Comedia".equals(tipo)) {
+                creditos += Math.floor(actuacion.numberoEspectadores() / 5);
+            }
+            result += actuacion.nombreEvento() + ": " + monto + ". Asientos: " + actuacion.numberoEspectadores() + "\n";//` ${play.name}: ${format(thisAmount/100)} (${perf.audience} seats)\n`;
+            totalAmount += monto;
+        }
+        result += "Monto ganado: " + totalAmount + "\n";
+        result += "Créditos ganados: " + creditos + "\n";
+
+        return result;
+    }
+
+     */
+
+
+/* tube que modificar el original porque el System.lineSeparator() es \r\n entonces el test no coria
     public String reporte(Factura factura, List<Evento> eventos) {
         float totalAmount = 0;
         float creditos = 0;
@@ -48,4 +123,6 @@ public class Calculador {
 
         return result;
     }
+
+ */
 }

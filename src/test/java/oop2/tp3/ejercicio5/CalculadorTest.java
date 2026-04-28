@@ -24,6 +24,14 @@ public class CalculadorTest {
     }
 
     private List<Evento> cargarEventos() {
+        return List.of(new Comedia("Escuela de Rock"),
+                new Drama("Hamlet"),
+                new Comedia("Cantando en la playa"),
+                new Drama("El Perfume")
+        );
+    }
+    /*original
+    private List<Evento> cargarEventos() {
         return List.of(new Evento("Escuela de Rock", "Comedia"),
                 new Evento("Hamlet", "Drama"),
                 new Evento("El Avion", "Dram"),
@@ -31,6 +39,8 @@ public class CalculadorTest {
                 new Evento("El Perfume", "Drama")
         );
     }
+
+     */
 
     private Factura crearFactura() {
         return new Factura("c1", List.of(new Actuacion("Escuela de Rock", 158),

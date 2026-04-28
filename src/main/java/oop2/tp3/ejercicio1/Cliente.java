@@ -13,13 +13,8 @@ public class Cliente {
 
     public Object[] calcularDeudaYPuntosObtenidos() {
         Object[] resultado = new Object[2];
-        double total = 0;
-        int puntosAlquilerFrecuente = 0;
-        for (Alquiler alquiler : alquileres) {
-            total += alquiler.calcularMonto();
-            // sumo puntos por alquiler
-            puntosAlquilerFrecuente += alquiler.calcularPuntos();
-        }
+        double total = alquileres.stream().mapToDouble(Alquiler::calcularMonto).sum();
+        int puntosAlquilerFrecuente = alquileres.stream().mapToInt(Alquiler::calcularPuntos).sum();
         resultado[0] = total;
         resultado[1] = puntosAlquilerFrecuente;
         return resultado;
